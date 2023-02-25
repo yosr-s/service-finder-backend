@@ -15,10 +15,14 @@ var serviceSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref:"Project"
     }],
+    photo:{
+        type:String,
+    },
     customers: [{
         type: mongoose.Schema.Types.ObjectId,
         ref:"Customer"
     }],
+   
     
 });  
      

@@ -11,29 +11,35 @@ const RouteInfo=require("./routes/Infopers.Route")
 
 
 
-
-//appel de la base
-const db=require("./config/db") //appel de la base 
-
-
 //todo middleware
 const auth=require("./middleware/auth")
 const upload=require("./middleware/uploads")
+
+//appel de la base
+const db=require("./config/db") //appel de la base 
 const bodyParser = require('body-parser')
 
 
-   
+
+
+
+//! frontend cors
+const cors = require('cors')
 const app = express()
-app.use(express.json())
-const port = 3000
+//! frontend cors
+app.use(cors("*"))   
+
+app.use(bodyParser.urlencoded({
+  extended: true
+})); 
 app.use(bodyParser.json());    
+ 
+app.use(express.json()) //pour l'envoie de données sous forme de données json
+const port = 3000
+  
 
 
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
-  })
-
-  app.set('secretKey', 'nodeRestApi'); //! jwt secret token 
+   
 
 
 
@@ -46,16 +52,35 @@ app.listen(port, () => {
   app.use("/messages", RouteMessage)
   app.use("/infos", RouteInfo)
 
- 
+  app.get("/file/:img",function(req,res) {
+    res.sendFile(__dirname+"/uploads/"+req.params.img)
+  })
 
 
- 
-
-
-
-
-
-app.get('/', (req, res) => {
+  app.get('/', (req, res) => {
     res.send('Hello World!')
   })
+  
+  
+  // express doesn't consider not found 404 as an error so we need to handle 404 explicitly
+  // handle 404 error
+  app.use(function(req, res, next) {
+    let err = new Error('Not Found');
+       err.status = 404;
+       next(err);
+   });
+   // handle errors
+   app.use(function(err, req, res, next) {
+    console.log(err);
+    
+     if(err.status === 404)
+      res.status(404).json({message: "Not found"});
+     else 
+       res.status(500).json({message: "Something looks wrong  !!!"});
+   });
+  
+  app.listen(port, () => {
+    console.log(`Example app listening on port ${port}`)
+  })
+  
     

@@ -35,7 +35,7 @@ var userSchema = new mongoose.Schema({
     photo:{
         type:String,    
     }
-}, baseOptions);         
+}, baseOptions);                 
  
 //! bcrypt hash user password before saving into database
 userSchema.pre('save', function (next) {

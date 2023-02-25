@@ -11,7 +11,7 @@ var infoSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required:true,
         ref:"Service"
-    },
+    },    
     customer: {
         type: mongoose.Schema.Types.ObjectId,
         required:true,

@@ -8,4 +8,4 @@ Router.delete("/:id",AdminController.delete) //ajouter le params
 Router.put("/:id",upload.single('file'),AdminController.update)
 Router.get("/",AdminController.read)
 Router.get("/:id",AdminController.findById)
-module.exports=Router;
+module.exports=Router;  

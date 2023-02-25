@@ -5,10 +5,7 @@ const UserModel = require("./User.Model")
 // Declare the Schema of the Mongo model
 var customerSchema = new mongoose.Schema({
    
-    service: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref:"Service"
-    },
+  
     projects:[{
         type: mongoose.Schema.Types.ObjectId,
         ref:"Project"
@@ -23,7 +20,7 @@ var customerSchema = new mongoose.Schema({
     }]             
 
   
-    
+       
 });
 
 //todo heritag
