@@ -47,7 +47,7 @@ const ProjectController={
                 res.json(err);
             }
             res.json(items)
-        }).select("-__v").populate("service","-__v")
+        }).select("-__v").populate("service","-__v").populate("customer","-__v")
 
     },
     update: function (req,res){
@@ -83,7 +83,7 @@ const ProjectController={
             res.json(err);
         }
         res.json(item)
-       })
+       }).select("-__v").populate("service","-__v").populate("customer","-__v")
     }
     
 

@@ -16,7 +16,20 @@ var infoSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required:true,
         ref:"Customer"
-    } 
+    },
+    fb_link:{
+         type:String,
+    },
+    insta_link:{
+        type:String,
+    },
+    linkedin_link:{
+        type:String,
+    },
+    description:{
+        type:String,
+    }
+
     
 });  
      

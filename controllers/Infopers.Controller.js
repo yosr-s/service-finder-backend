@@ -1,10 +1,11 @@
 const InfoModel = require("../models/Infopers.Model");
+const CustomerModel = require("../models/Customer.Model");
 
 const InfoController = {
   create: function (req, res) {
     req.body["image"] = req.file.filename;
     console.log(req.body);
-    InfoModel.create(req.body, function (err, item) {
+    InfoModel.create(req.body, async function (err, item) {
       if (err) {
         res
           .status(406)
@@ -13,7 +14,23 @@ const InfoController = {
             message: "info not created" + err,
             data: null,
           });
-      }  
+      } 
+      const customer = await CustomerModel.findOneAndUpdate(
+        {_id: req.body.customer},
+        {$push: {infos: item._id}},
+        {new: true}
+    );
+    if (!customer) {
+        return res.status(406).json({status:406,message:"customer not found",data:null})
+    }
+    const service = await ServiceModel.findOneAndUpdate(
+      {_id: req.body.service},
+      {$push: {customers: req.body.customer._id}},
+      {new: true}
+  );
+  if (!service) {
+      return res.status(406).json({status:406,message:"customer not found",data:null})
+  } 
       res
         .status(200)
         .json({ status: 200, message: "created info", data: item });
@@ -30,7 +47,7 @@ const InfoController = {
           .status(200)
           .json({ status: 200, message: "infos", data: items });
       }
-    }).select("-__v");
+    }).select("-__v").populate("customer","-__v").populate("service","-__v");
   },
   update: function (req, res) {
     req.body["photo"] = req.file.filename;
@@ -63,12 +80,17 @@ const InfoController = {
   },
   
   delete: function (req, res) {
-    InfoModel.findByIdAndDelete(req.params.id, function (err, item) {
+    InfoModel.findByIdAndDelete(req.params.id, async function (err, item) {
       if (err) {
         res
           .status(406)
           .json({ status: 406, message: "info not created", data: null });
       }
+      const customer = await CustomerModel.findOneAndUpdate(
+        {_id: req.body.customer},
+        {$pull: {infos: item._id}},
+        {new: true}
+    );
       res
         .status(200)
         .json({ status: 200, message: "created info", data: item });

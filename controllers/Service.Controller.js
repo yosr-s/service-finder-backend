@@ -44,7 +44,16 @@ const ServiceController={
             res.json(err);
         }
         res.json(item)
-       })
+       }).select("-__v").populate("projects","-__v").populate({
+        path: "customers",
+        select: "-__v",
+        populate: [
+          {
+            path: "infos",
+            select: "-__v"
+          },
+        ]
+      })
     }
     
 

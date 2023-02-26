@@ -8,7 +8,7 @@ const CustomerController={
                 res.status(406).json({status:406,message:"Customer not created" +err,data:null})
             }
             res.status(200).json({status:200,message:"created Customer",data:item})
-        }).select("-__v").populate("service","-__v").populate("projects","-__v").populate("infos","-__v").populate("messages","-__v") 
+        }) 
 
     },
     read: function (req,res){
@@ -19,7 +19,16 @@ const CustomerController={
             } else {
             res.status(200).json({ status: 200, message: "Customers", data: items })
             }
-        }).select("-__v")
+        }).select("-__v").populate("projects","-__v").populate("messages","-__v").populate({
+            path: "infos",
+            select: "-__v",
+            populate: [
+              {
+                path: "service",
+                select: "-__v"
+              },
+            ]
+          })
 
     },
     update: function (req,res){
@@ -47,7 +56,16 @@ const CustomerController={
              res.json(err);
          }
          res.json(item)
-        })
+        }).select("-__v").populate("projects","-__v").populate("messages","-__v").populate({
+            path: "infos",
+            select: "-__v",
+            populate: [
+              {
+                path: "service",
+                select: "-__v"
+              },
+            ]
+          })
      }
 
 

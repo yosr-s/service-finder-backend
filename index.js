@@ -7,6 +7,8 @@ const RouteContact=require("./routes/Contact.Route")
 const RouteProject=require("./routes/Project.Route")
 const RouteMessage=require("./routes/Message.Route")
 const RouteInfo=require("./routes/Infopers.Route")
+const RouteReview=require("./routes/Review.Route")
+
 
 
 
@@ -51,6 +53,8 @@ const port = 3000
   app.use("/projects",upload.array('files'),RouteProject) 
   app.use("/messages", RouteMessage)
   app.use("/infos", RouteInfo)
+  app.use("/reviews", RouteReview)
+
 
   app.get("/file/:img",function(req,res) {
     res.sendFile(__dirname+"/uploads/"+req.params.img)
