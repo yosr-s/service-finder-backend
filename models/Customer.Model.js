@@ -17,7 +17,11 @@ var customerSchema = new mongoose.Schema({
     messages:[{
         type: mongoose.Schema.Types.ObjectId,
         ref:"Message"
-    }]               
+    }] ,
+    reviews:[{  
+        type: mongoose.Schema.Types.ObjectId,
+        ref:"Review"
+    }],            
 
   
        

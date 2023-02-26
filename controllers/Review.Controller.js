@@ -1,4 +1,5 @@
 const ReviewModel = require("../models/Review.Model")
+const CustomerModel = require("../models/Customer.Model")
 
 const MessageController={
     create: function (req,res){
@@ -6,10 +7,19 @@ const MessageController={
             if (err){
                 res.status(406).json({status:406,message:"review not created",data:null})
             }
+            const customer = await CustomerModel.findOneAndUpdate(
+                {_id: req.body.service_provider},
+                {$push: {reviews: item._id}},
+                {new: true}
+            );
+            if (!customer) {
+                return res.status(406).json({status:406,message:"customer not found",data:null})
+            }   
+
             
             res.status(200).json({status:200,message:"created rview",data:item})
         }).select("-__v")
-
+  
     },
     read: function (req,res){
         ReviewModel.find({},function(err,items){

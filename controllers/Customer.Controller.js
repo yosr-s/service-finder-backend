@@ -49,7 +49,7 @@ const CustomerController={
             }
             res.status(200).json({ status: 200, message: "created Customer", data: item })
         })
-    },
+    },  
     findById: function (req,res){
         CustomerModel.findOne({_id:req.params.id},function(err,item){
          if(err){
@@ -65,7 +65,7 @@ const CustomerController={
                 select: "-__v"
               },
             ]
-          })
+          }).populate({path:"reviews",select:"-__v",populate:[{path:"customer",select:"-__v",populate:[{path:"infos",select:"-__v"}]},]})
      }
 
 
